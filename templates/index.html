@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Task Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <h1>Kanban Task Manager</h1>
+
+    <div class="kanban-board">
+        <!-- To-Do Column -->
+        <div class="column">
+            <h2>To-Do</h2>
+            <form action="/add" method="post">
+                <input type="text" name="task" placeholder="New Task" required>
+                <input type="hidden" name="status" value="todo">
+                <button type="submit">➕ Add</button>
+            </form>
+            <div class="task-list" id="todo">
+                {% for task in tasks["todo"] %}
+                    <div class="task" draggable="true" data-id="{{ task.id }}">
+                        {{ task.task }}
+                        <button class="delete" onclick="deleteTask({{ task.id }})">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- In Progress Column -->
+        <div class="column">
+            <h2>In Progress</h2>
+            <div class="task-list" id="in_progress">
+                {% for task in tasks["in_progress"] %}
+                    <div class="task" draggable="true" data-id="{{ task.id }}">
+                        {{ task.task }}
+                        <button class="delete" onclick="deleteTask({{ task.id }})">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Done Column -->
+        <div class="column">
+            <h2>Done ✅</h2>
+            <div class="task-list" id="done">
+                {% for task in tasks["done"] %}
+                    <div class="task" draggable="true" data-id="{{ task.id }}">
+                        {{ task.task }}
+                        <button class="delete" onclick="deleteTask({{ task.id }})">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
